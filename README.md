@@ -21,7 +21,6 @@ The HTTP server is implemented with Vapor.
 - macOS 26 or later.
 - Xcode / Swift toolchain that supports the package's Swift tools version.
 - Network access may be required during the first build so Swift Package Manager can fetch dependencies such as Vapor.
-- Runtime OCR processing is local and does not require an external OCR service.
 
 ## CLI Usage
 
