@@ -189,23 +189,23 @@ enum OCRCommandError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidArguments:
-            "參數格式錯誤"
+            "Invalid arguments"
         case .helpMustBeUsedAlone:
-            "-h/--help 不能與其他參數一起使用"
+            "-h/--help cannot be used with other arguments"
         case .versionMustBeUsedAlone:
-            "-V/--version 不能與其他參數一起使用"
+            "-V/--version cannot be used with other arguments"
         case .noInputImages:
-            "請在 -o 後面指定至少一個 jpg 檔案"
+            "Specify at least one image file after -o"
         case .mutuallyExclusiveModes:
-            "-s 與 -o 不能同時使用"
+            "-s and -o cannot be used together"
         case .portRequiresServerMode:
-            "-p 只能搭配 -s 使用"
+            "-p can only be used with -s"
         case .invalidPort:
-            "-p 後面請指定 1 到 65535 之間的 port"
+            "Specify a port between 1 and 65535 after -p"
         case .cannotReadImage(let path):
-            "無法讀取圖片：\(path)"
+            "Cannot read image: \(path)"
         case .cannotWriteMarkdown(let path):
-            "無法寫入 Markdown：\(path)"
+            "Cannot write Markdown: \(path)"
         }
     }
 }

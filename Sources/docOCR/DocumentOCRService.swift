@@ -369,15 +369,12 @@ private struct DocumentBlock {
 }
 
 enum DocumentOCRError: LocalizedError {
-    case imageNotFound
     case noDocumentDetected
 
     var errorDescription: String? {
         switch self {
-        case .imageNotFound:
-            "找不到 TestDocOCR/imgs/01.jpg"
         case .noDocumentDetected:
-            "沒有在圖片中偵測到文件內容"
+            "No document content was detected in the image"
         }
     }
 }
