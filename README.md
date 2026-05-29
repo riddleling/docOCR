@@ -8,7 +8,7 @@
 
 - Converts image files to Markdown text.
 - Writes batch OCR output next to each source image using the same basename and a `.md` extension.
-- Preserves detected paragraphs, lists, and tables when supported by Apple's document recognition API.
+- Converts detected paragraphs, lists, and tables into Markdown when Apple's document recognition API identifies them.
 - Provides a local web UI for uploading an image and viewing OCR output.
 - Provides a JSON API for image upload and OCR response.
 - Uses Apple's `RecognizeDocumentsRequest` API, available on macOS 26+.
