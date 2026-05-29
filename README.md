@@ -184,9 +184,9 @@ swift run docOCR -o ~/Desktop/book_imgs/*.jpg
 swift run docOCR -s -p 8000
 ```
 
-## macOS Shortcut: Screenshot to Markdown
+## macOS Shortcuts: Screenshot to Markdown
 
-`docOCR` can also be used with a macOS Shortcut to turn a screenshot into Markdown text.
+`docOCR` can also be used with the Shortcuts app on macOS to turn a screenshot into Markdown text.
 
 In this workflow, the shortcut captures a screen selection, sends the screenshot image to the local `docOCR` HTTP API, copies the OCR Markdown text to the clipboard, and then lets you paste the result into any text editor.
 
@@ -196,7 +196,7 @@ Start the local server first:
 docOCR -s
 ```
 
-Then run the macOS Shortcut:
+Then run the macOS shortcut:
 
 ![screenshot_to_md](screenshot_to_md.gif)
 
