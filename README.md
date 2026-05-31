@@ -234,7 +234,7 @@ Alternatively, the shortcut can call the `/api/ocr` API instead of running `docO
 docOCR -s
 ```
 
-Download the API-based shortcut: [Screenshot to Markdown via API](https://www.icloud.com/shortcuts/e02b7bedcd344373a597bd319f70d783).
+Download the API-based shortcut: [Screenshot to Markdown via API](https://www.icloud.com/shortcuts/7e8202fc040946ce8498da220fbf870f).
 
 ![image2](image2.png)
 
