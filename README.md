@@ -207,8 +207,7 @@ The shortcut flow is:
 1. Capture a screenshot.
 2. Save the screenshot as a temporary image file.
 3. Run `docOCR <screenshot-image-path>`.
-4. Read the OCR Markdown text from stdout.
-5. Copy the Markdown text to the clipboard.
+4. Read the OCR Markdown text from stdout and copy it to the clipboard.
 
 Paste the result into your editor.
 
