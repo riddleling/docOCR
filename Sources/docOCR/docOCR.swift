@@ -18,10 +18,12 @@ struct OCRCommand {
     static let version = AppVersion.current
     static let usage = """
     Usage:
+      docOCR <image1.jpg> [image2.jpg ...]
       docOCR -o <image1.jpg> [image2.jpg ...]
       docOCR -s [-p <port>]
 
     Options:
+      <images...>       OCR image files and print Markdown to stdout
       -o <images...>    OCR image files and write .md files next to them
       -s                Start the HTTP server
       -p <port>         HTTP server port, only valid with -s
@@ -44,16 +46,31 @@ struct OCRCommand {
             return
         }
 
-        switch (parsedArguments.serverEnabled, parsedArguments.outputImagePaths.isEmpty) {
-        case (true, true):
+        switch (
+            parsedArguments.serverEnabled,
+            parsedArguments.outputImagePaths.isEmpty,
+            parsedArguments.inputImagePaths.isEmpty
+        ) {
+        case (true, true, true):
             mode = .server(port: parsedArguments.port, ocrService: ocrService)
-        case (false, false):
+        case (false, false, true):
             guard parsedArguments.port == nil else {
                 throw OCRCommandError.portRequiresServerMode
             }
 
             mode = .outputFiles(
                 imageURLs: parsedArguments.outputImagePaths.map {
+                    URL(fileURLWithPath: NSString(string: $0).expandingTildeInPath)
+                },
+                ocrService: ocrService
+            )
+        case (false, true, false):
+            guard parsedArguments.port == nil else {
+                throw OCRCommandError.portRequiresServerMode
+            }
+
+            mode = .printText(
+                imageURLs: parsedArguments.inputImagePaths.map {
                     URL(fileURLWithPath: NSString(string: $0).expandingTildeInPath)
                 },
                 ocrService: ocrService
@@ -73,21 +90,22 @@ struct OCRCommand {
             for imageURL in imageURLs {
                 try await processImage(at: imageURL, ocrService: ocrService)
             }
+        case .printText(let imageURLs, let ocrService):
+            for (index, imageURL) in imageURLs.enumerated() {
+                let markdownText = try await recognizeImage(at: imageURL, ocrService: ocrService)
+                if index > 0 {
+                    print("")
+                }
+
+                print(markdownText)
+            }
         case .server(let port, let ocrService):
             try await DocumentOCRHTTPServer(port: port, ocrService: ocrService).run()
         }
     }
 
     private func processImage(at imageURL: URL, ocrService: DocumentOCRService) async throws {
-        let imageData: Data
-
-        do {
-            imageData = try Data(contentsOf: imageURL)
-        } catch {
-            throw OCRCommandError.cannotReadImage(imageURL.path)
-        }
-
-        let markdownText = try await ocrService.recognizeParagraphText(from: imageData)
+        let markdownText = try await recognizeImage(at: imageURL, ocrService: ocrService)
         let outputURL = imageURL.deletingPathExtension().appendingPathExtension("md")
 
         do {
@@ -98,11 +116,24 @@ struct OCRCommand {
 
         print("Wrote \(outputURL.path)")
     }
+
+    private func recognizeImage(at imageURL: URL, ocrService: DocumentOCRService) async throws -> String {
+        let imageData: Data
+
+        do {
+            imageData = try Data(contentsOf: imageURL)
+        } catch {
+            throw OCRCommandError.cannotReadImage(imageURL.path)
+        }
+
+        return try await ocrService.recognizeParagraphText(from: imageData)
+    }
 }
 
 private enum Mode {
     case help
     case version
+    case printText(imageURLs: [URL], ocrService: DocumentOCRService)
     case outputFiles(imageURLs: [URL], ocrService: DocumentOCRService)
     case server(port: Int?, ocrService: DocumentOCRService)
 }
@@ -112,6 +143,7 @@ private struct ParsedArguments {
     var versionRequested = false
     var serverEnabled = false
     var port: Int?
+    var inputImagePaths: [String] = []
     var outputImagePaths: [String] = []
 
     init(_ arguments: [String]) throws {
@@ -165,11 +197,28 @@ private struct ParsedArguments {
 
                 index = arguments.endIndex
             default:
-                throw OCRCommandError.invalidArguments
+                guard !argument.hasPrefix("-") else {
+                    throw OCRCommandError.invalidArguments
+                }
+
+                inputImagePaths = Array(arguments[index...])
+                guard !inputImagePaths.contains(where: { $0 == "-s" || $0 == "-p" || $0 == "-o" }) else {
+                    throw OCRCommandError.invalidArguments
+                }
+
+                index = arguments.endIndex
             }
         }
 
         if serverEnabled, !outputImagePaths.isEmpty {
+            throw OCRCommandError.mutuallyExclusiveModes
+        }
+
+        if serverEnabled, !inputImagePaths.isEmpty {
+            throw OCRCommandError.mutuallyExclusiveModes
+        }
+
+        if !outputImagePaths.isEmpty, !inputImagePaths.isEmpty {
             throw OCRCommandError.mutuallyExclusiveModes
         }
     }
