@@ -213,6 +213,14 @@ Paste the result into your editor.
 
 ![image3](image3.png)
 
+Alternatively, the shortcut can call the `/api/ocr` API instead of running `docOCR` directly. Start the local server first:
+
+```bash
+docOCR -s
+```
+
+![image2](image2.png)
+
 ## Codex Skill
 
 If you use Codex, you can install the companion skill for docOCR: [dococr-skill](https://github.com/riddleling/dococr-skill)
