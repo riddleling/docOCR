@@ -41,6 +41,14 @@ docOCR --version
 Convert image files to Markdown:
 
 ```bash
+docOCR ~/Desktop/book_imgs/*.jpg
+```
+
+This prints the OCR Markdown text to the terminal.
+
+Write Markdown files next to the source images:
+
+```bash
 docOCR -o ~/Desktop/book_imgs/*.jpg
 ```
 
@@ -188,13 +196,7 @@ swift run docOCR -s -p 8000
 
 `docOCR` can also be used with the Shortcuts app on macOS to turn a screenshot into Markdown text.
 
-In this workflow, the shortcut captures a screen selection, sends the screenshot image to the local `docOCR` HTTP API, copies the OCR Markdown text to the clipboard, and then lets you paste the result into any text editor.
-
-Start the local server first:
-
-```bash
-docOCR -s
-```
+In this workflow, the shortcut captures a screen selection, passes the screenshot image path to `docOCR`, reads the Markdown text from stdout, copies it to the clipboard, and then lets you paste the result into any text editor.
 
 Then run the macOS shortcut:
 
@@ -203,13 +205,14 @@ Then run the macOS shortcut:
 The shortcut flow is:
 
 1. Capture a screenshot.
-2. Upload the image to `http://127.0.0.1:8080/api/ocr`.
-3. Read the `text` field from the JSON response.
-4. Copy the Markdown text to the clipboard.
+2. Save the screenshot as a temporary image file.
+3. Run `docOCR <screenshot-image-path>`.
+4. Read the OCR Markdown text from stdout.
+5. Copy the Markdown text to the clipboard.
 
 Paste the result into your editor.
 
-![image2](image2.png)
+![image3](image3.png)
 
 ## Codex Skill
 
