@@ -210,3 +210,9 @@ The shortcut flow is:
 Paste the result into your editor.
 
 ![image2](image2.png)
+
+## Codex Skill
+
+If you use Codex, you can install the companion skill for docOCR: [dococr-skill](https://github.com/riddleling/dococr-skill)
+
+The skill gives Codex reusable context for docOCR CLI usage, local HTTP API calls, OCR execution, and troubleshooting.
