@@ -4,6 +4,19 @@
 
 ![Image](image.png)
 
+## Table of Contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [CLI Usage](#cli-usage)
+- [HTTP Server](#http-server)
+- [API Usage](#api-usage)
+- [Build](#build)
+- [Install](#install)
+- [Development](#development)
+- [macOS Shortcuts: Screenshot to Markdown](#macos-shortcuts-screenshot-to-markdown)
+- [Codex Skill](#codex-skill)
+
 ## Features
 
 - Converts image files to Markdown text.
@@ -211,6 +224,8 @@ The shortcut flow is:
 
 Paste the result into your editor.
 
+Download the stdout-based shortcut: [Screenshot to Markdown](https://www.icloud.com/shortcuts/6ed566343cf0472fbabd98c91427a61f).
+
 ![image3](image3.png)
 
 Alternatively, the shortcut can call the `/api/ocr` API instead of running `docOCR` directly. Start the local server first:
@@ -218,6 +233,8 @@ Alternatively, the shortcut can call the `/api/ocr` API instead of running `docO
 ```bash
 docOCR -s
 ```
+
+Download the API-based shortcut: [Screenshot to Markdown via API](https://www.icloud.com/shortcuts/e02b7bedcd344373a597bd319f70d783).
 
 ![image2](image2.png)
 
