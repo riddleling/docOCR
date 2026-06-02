@@ -16,7 +16,7 @@ struct DocumentOCRHTTPServer {
 
         app.http.server.configuration.hostname = hostname
         app.http.server.configuration.port = port
-        app.routes.defaultMaxBodySize = "30mb"
+        app.routes.defaultMaxBodySize = "100mb"
         app.middleware.use(APIErrorMiddleware())
 
         app.get { _ in
